@@ -45,7 +45,7 @@ Once you're done editing the file, use the command:
 
 ```make py```
 
-This will save the filter configuration to `filter.txt`, which gets read by the seedfinding program itself. It will also save the corresponding filter code to the filter history file (`data/filterhistory.txt`), so that you may access it in the future if needed. If you want to skip being asked to name the filter, you can use the command:
+This will save the filter configuration to `data/filter.txt`, which gets read by the seedfinding program itself. It will also save the corresponding filter code to the filter history file (`data/filterhistory.txt`), so that you may access it in the future if needed. If you want to skip being asked to name the filter, you can use the command:
 
 ```make pyn```
 

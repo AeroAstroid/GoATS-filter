@@ -458,4 +458,4 @@ with open("data/filterhistory.txt", "a") as hist_file:
 
 print("\n")
 print("FULL FILTER CODE: " + filter_code + "\n")
-print("This filter code has been  saved to filter.txt! Run the command ./seed to start finding seeds.")
+print("This filter code has been saved to data/filter.txt! Run the command [make run] to start finding seeds.")
