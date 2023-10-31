@@ -25,7 +25,7 @@ Once you're done, open the Linux terminal in the folder you've extracted **GoATS
 
 To install all the dependencies **GoATS** needs to run, you can use this command in the terminal:
 
-```sudo apt install gcc python python-is-python3 default-jre make```
+```sudo apt install gcc python python-is-python3 openjdk-17-jre-headless make```
 
 Note that if you're running Linux, you might need to use a different package manager depending on your distro (e.g. `pacman`, `flatpak`, etc).
 
