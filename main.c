@@ -119,7 +119,7 @@ void* seedfinding_thread(void* seed_info_pointer) {
 
 				LOCK_THREADS;
 					if (seeds_found < filter->seed_requirement) {
-						printf("%ld\n", seed);
+						printf("%lld\n", seed);
 
 						if (filter->output_seed_info) {
 							*seed_info = *temp_info;
@@ -247,9 +247,9 @@ int main(int argc, char *argv[]) {
 	double elapsed = delta.tv_sec + (double)delta.tv_nsec/1000000000L;
 
 	printf("\nEnded filter. Stats:\n");
-	printf("-> Output %ld seeds (%.2f per second)\n", seeds_found, seeds_found/elapsed);
-	printf("-> Checked %ld seeds (%.2f per second)\n", seeds_checked, seeds_checked/elapsed);
-	printf("-> Exhausted %ld seeds (%.2f per second)\n", seeds_discarded, seeds_discarded/elapsed);
+	printf("-> Output %lld seeds (%.2f per second)\n", seeds_found, seeds_found/elapsed);
+	printf("-> Checked %lld seeds (%.2f per second)\n", seeds_checked, seeds_checked/elapsed);
+	printf("-> Exhausted %lld seeds (%.2f per second)\n", seeds_discarded, seeds_discarded/elapsed);
 	printf("-> Total time: %f seconds\n", elapsed);
 	printf("-> %.9f%% of seeds checked succeeded\n", 100 * (double)seeds_found / seeds_checked);
 
