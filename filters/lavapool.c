@@ -116,7 +116,7 @@ int lava_pool(int64_t seed, SeedInfo* seed_info, int range, int pool_minimum, Ge
 	for (int d = 0; d < default_pool_count; d++) {
 		int lava_biome = getBiomeAt(world_gen, 1, default_pools[d].x, 63, default_pools[d].z);
 
-		if (lava_biome == plains || lava_biome == savanna || lava_biome == snowy_tundra) {
+		if (lava_biome == plains || lava_biome == savanna || lava_biome == snowy_tundra || lava_biome == jungle) {
 			if (seed_info->pool_count > 4) {
 				break;
 			}
