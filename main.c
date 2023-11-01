@@ -1,11 +1,11 @@
-#include "include/gcrypt.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 #include <string.h>
 
+#include "libs/sfmt/SFMT.h"
+
 #include "module/mathutils.h"
-#include "module/rand.h"
 #include "module/filter.h"
 #include "module/timedelta.h"
 
@@ -33,19 +33,14 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 // (optimize seeds output per second)
 int64_t biome_fail_limit = 100;
 
+sfmt_t sfmt;
+
 void* seedfinding_thread(void* seed_info_pointer) {
 	FILE* seed_info_file = (FILE*) seed_info_pointer;
 
 	// Set up the generator object for this MC version
 	Generator world_gen;
 	setupGenerator(&world_gen, filter->mc_version, 0);
-
-	// Set up the fast random seed generator
-	LOCK_THREADS;
-		gcry_cipher_hd_t cipher;
-		setkey(&cipher);
-		unsigned char* seed_buffer = malloc(9);
-	UNLOCK_THREADS;
 
 	// Struct holding seed data / filter triggers on the current seed
 	SeedInfo* seed_info = malloc(sizeof(SeedInfo));
@@ -56,11 +51,11 @@ void* seedfinding_thread(void* seed_info_pointer) {
 
 	int64_t lower48;
 	int64_t upper16;
-
-	// pick a random 8 byte (64 bit) full seed to start from
-	int64_t seed = random_seed(cipher, 8, seed_buffer);
+	int64_t seed;
 
 	while (seeds_found < filter->seed_requirement) {
+		seed = sfmt_genrand_uint64(&sfmt);
+
 		LOCK_THREADS;
 			if (seeds_found >= filter->seed_requirement) {
 				break;
@@ -76,8 +71,8 @@ void* seedfinding_thread(void* seed_info_pointer) {
 			// reset saved structure info
 			clear_info(seed_info);
 
-			// generate a random 6 byte (48 bit) seed
-			lower48 = random_seed(cipher, 6, seed_buffer);
+			// get lower 48 bits of the newly generated seed
+			lower48 = seed & 0xFFFFFFFFFFFFLL;
 
 			int result = structureFilterLogic(lower48, seed_info, filter);
 
@@ -90,8 +85,8 @@ void* seedfinding_thread(void* seed_info_pointer) {
 		// Biome based checks
 		if (found_structure_seed) {
 			
-			// generate a random 2 byte (16 bit) seed
-			upper16 = random_seed(cipher, 2, seed_buffer);
+			// get upper 16 bits of the newly generated seed
+			upper16 = seed >> 48;
 
 			// combine the upper and lower bits to make the full seed
 			seed = lower48 | (upper16 << 48);
@@ -228,6 +223,7 @@ int main(int argc, char *argv[]) {
 
 	struct timespec start, finish, delta;
 	clock_gettime(CLOCK_REALTIME, &start);
+	sfmt_init_gen_rand(&sfmt, start.tv_nsec);
 
 	pthread_t threads[thread_count];
 
