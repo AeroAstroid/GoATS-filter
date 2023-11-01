@@ -29,8 +29,10 @@ int64_t seeds_discarded = 0; // Total seeds discarded, counts all sister seeds
 // Mutex for editing the above three variables, printing seeds and seed info, etc
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 
-int64_t biome_fail_limit;
-int64_t total_biome_fails = 0;
+// TODO: revisit this limit and figure out how to automatically determine whether
+// lower or higher is better for performance depending on the filter parameters
+// (optimize seeds output per second)
+int64_t biome_fail_limit = 100;
 
 void* seedfinding_thread(void* seed_info_pointer) {
 	FILE* seed_info_file = (FILE*) seed_info_pointer;
@@ -110,10 +112,7 @@ void* seedfinding_thread(void* seed_info_pointer) {
 				consecutive_biome_fails++;
 
 				// If enough consecutive biome checks fail, assume the lower48 is no good and scrap it
-
-				// TODO: revisit this limit and figure out how to automatically determine whether
-				// lower or higher is better for performance (optimize seeds output per second)
-				if (consecutive_biome_fails > 100) {
+				if (consecutive_biome_fails > biome_fail_limit) {
 					consecutive_biome_fails = 0;
 					found_structure_seed = 0;
 
@@ -229,23 +228,26 @@ int main(int argc, char *argv[]) {
 	printf("Selected thread count: %d\n", thread_count);
 
 	struct timespec start, finish, delta;
-    clock_gettime(CLOCK_REALTIME, &start);
+	clock_gettime(CLOCK_REALTIME, &start);
 
 	pthread_t threads[thread_count];
 
 	for (int i = 0; i < thread_count; ++i) {
-        pthread_create(&threads[i], NULL, seedfinding_thread, (void*) seed_info_file);
-    }
+		pthread_create(&threads[i], NULL, seedfinding_thread, (void*) seed_info_file);
+	}
 
-    for (int i = 0; i < thread_count; ++i) {
-        pthread_join(threads[i], NULL);
-    }
+	for (int i = 0; i < thread_count; ++i) {
+		pthread_join(threads[i], NULL);
+	}
 
-	fprintf(seed_info_file, "END_SEEDS");
+	if (filter->output_seed_info) {
+		fprintf(seed_info_file, "END_SEEDS");
+	}
+	
 	fclose(seed_info_file);
 
 	clock_gettime(CLOCK_REALTIME, &finish);
-    sub_timespec(start, finish, &delta);
+	sub_timespec(start, finish, &delta);
 
 	double elapsed = delta.tv_sec + (double)delta.tv_nsec/1000000000L;
 
