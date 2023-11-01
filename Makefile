@@ -3,8 +3,10 @@ ifeq (run,$(firstword $(MAKECMDGOALS)))
   $(eval $(ARGS):;@:)
 endif
 
+L_CUBIOMES := $(filter-out ./libs/cubiomes/tests.c,$(wildcard ./libs/cubiomes/*.c))
+
 compile:
-	gcc main.c ./module/*.c ./filters/*.c ./logic/*.c -I/include -L./libs -lgcrypt -lgpg-error -lcubiomes -lm -pthread -Ofast -g -march=native -o seed
+	gcc main.c ./module/*.c ./filters/*.c ./logic/*.c $(L_CUBIOMES) -I/include -L./libs -lgcrypt -lgpg-error -lm -pthread -Ofast -g -march=native -o seed
 
 py:
 	python config.py

@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "../module/mathutils.h"
-#include "../include/finders.h"
+#include "../libs/cubiomes/finders.h"
 #include "../module/filter.h"
 
 // Finds a desert temple within a certain distance of origin

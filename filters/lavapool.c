@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdint.h>
-#include "../include/finders.h"
+#include "../libs/cubiomes/finders.h"
 #include "../module/filter.h"
 
 // Structure seed call for potential desert lava pools

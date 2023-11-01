@@ -1,4 +1,4 @@
-#include "../include/biomenoise.h"
+#include "../libs/cubiomes/biomenoise.h"
 #include <stdint.h>
 #include <stdio.h>
 

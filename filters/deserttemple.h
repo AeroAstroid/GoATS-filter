@@ -1,4 +1,4 @@
-#include "../include/finders.h"
+#include "../libs/cubiomes/finders.h"
 #include "../module/filter.h"
 
 int desert_temple_pos(int64_t lower48, SeedInfo* seed_info, int range, int quadrants, int mc_version);

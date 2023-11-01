@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "../include/finders.h"
+#include "../libs/cubiomes/finders.h"
 #include "../module/filter.h"
 
 int shipwreck_type(int64_t lower48, SeedInfo* seed_info, int allowed_types);

@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <stdio.h>
-#include "../include/finders.h"
+#include "../libs/cubiomes/finders.h"
 #include "../module/mathutils.h"
 #include "../module/filter.h"
 

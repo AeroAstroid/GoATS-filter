@@ -1,7 +1,7 @@
 #ifndef FILTER_H
 #define FILTER_H
 
-#include "../include/finders.h"
+#include "../libs/cubiomes/finders.h"
 
 typedef struct {
 	Pos fortresses[4];

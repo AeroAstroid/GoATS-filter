@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "../include/finders.h"
+#include "../libs/cubiomes/finders.h"
 #include "../module/filter.h"
 
 int potential_desert_lava(int64_t lower48, int x, int z, int* lx, int* lz);

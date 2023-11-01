@@ -1,0 +1,3 @@
+[submodule "libs/cubiomes"]
+	path = libs/cubiomes
+	url = https://github.com/Cubitect/cubiomes.git

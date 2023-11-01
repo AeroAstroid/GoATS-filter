@@ -1,4 +1,4 @@
-#include "../include/rng.h"
+#include "../libs/cubiomes/rng.h"
 #include "../module/filter.h"
 
 int bt_at_chunk(int64_t lower48, int chunkX, int chunkZ);

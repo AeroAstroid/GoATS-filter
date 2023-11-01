@@ -1,4 +1,4 @@
-#include "../include/rng.h"
+#include "../libs/cubiomes/rng.h"
 #include "../module/filter.h"
 #include "../module/mathutils.h"
 #include <stdio.h>

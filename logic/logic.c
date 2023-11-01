@@ -15,7 +15,7 @@
 
 #include "../module/filter.h"
 
-#include "../include/biomes.h"
+#include "../libs/cubiomes/biomes.h"
 
 int structureFilterLogic(int64_t seed, SeedInfo* seed_info, Filter* filter) {
 	if (filter->BASTION) {

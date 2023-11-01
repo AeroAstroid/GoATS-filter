@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "../include/generator.h"
+#include "../libs/cubiomes/generator.h"
 #include "../module/filter.h"
 
 int ruined_portal_pos(int64_t seed, SeedInfo* seed_info, int max_dist, int mc_version);

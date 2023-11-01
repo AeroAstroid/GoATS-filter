@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "../include/finders.h"
+#include "../libs/cubiomes/finders.h"
 #include "../module/filter.h"
 #include "../module/mathutils.h"
 
