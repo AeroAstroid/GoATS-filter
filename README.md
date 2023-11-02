@@ -13,7 +13,7 @@ As of right now, all included filters *should* work as intended for 1.16+, with 
 
 *[Note: this installation tutorial is a work in progress, and a more in-depth video tutorial is planned for the official release.]*
 
-Download the .zip file of this repository's source code in the Releases tab, or by pressing `Code` > `Download ZIP` in the repository's front page, and extract it wherever you'd like.
+Download the .zip file of this repository's source code in the Releases tab, and extract it wherever you'd like.
 
 To run, **GoATS** requires the following dependencies:
 - `gcc`, to compile the seedfinding code
