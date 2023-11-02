@@ -1,6 +1,7 @@
 #include <stdint.h>
 
 #include "../util/filter.h"
+#include "../util/mathutils.h"
 
 #include "../submodules/cubiomes/finders.h"
 #include "../submodules/cubiomes/generator.h"
