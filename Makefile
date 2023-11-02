@@ -9,7 +9,7 @@ L_CUBIOMES := $(filter-out ./submodules/cubiomes/tests.c,$(wildcard ./submodules
 L_SFMT := ./submodules/sfmt/SFMT.c
 
 compile:
-	gcc main.c ./filters/*.c ./logic/*.c ./util/*.c $(L_CUBIOMES) $(L_SFMT) -lm -pthread -Ofast -DSFMT_MEXP=19937 -g -mavx -o seed
+	gcc main.c ./filters/*.c ./logic/*.c ./util/*.c $(L_CUBIOMES) $(L_SFMT) -lm -pthread -Ofast -DSFMT_MEXP=19937 -g -mavx -Wno-format -o seed
 
 py:
 	$(PYTHON) config.py
