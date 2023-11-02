@@ -6,4 +6,5 @@ data/filterhistory.txt
 .vscode
 poi
 seed
+seed.exe
 *.txt

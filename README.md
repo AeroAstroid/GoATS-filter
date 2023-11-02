@@ -13,27 +13,68 @@ As of right now, all included filters *should* work as intended for 1.16+, with 
 
 *[Note: this installation tutorial is a work in progress, and a more in-depth video tutorial is planned for the official release.]*
 
-*[Note: no installation method that works on Mac has been investigated yet.]*
-
 Download the .zip file of this repository's source code in the Releases tab, or by pressing `Code` > `Download ZIP` in the repository's front page, and extract it wherever you'd like.
 
-**Running GoATS requires a Linux terminal.** If you're on Linux, you're already set and can skip this step. If you're on Windows, you can download one by following the first half of [this tutorial](https://www.youtube.com/watch?v=Gl7zOn2lLo4).
+To run, **GoATS** requires the following dependencies:
+- `gcc`, to compile the seedfinding code
+- `make`, to provide the relevant console commands
+- `python`, to run the filter customization script
+- `java`, to run extra scripts such as lavachecker **(Java 17 or above is required)**
 
-Once you're done, open the Linux terminal in the folder you've extracted **GoATS** into.
-- On Linux, you can right click on the folder and select `Terminal`.
-- On Windows, hold shift and right click inside the folder and select `Open Linux shell here`.
+To install these, follow the steps corresponding to your platform:
 
-To install all the dependencies **GoATS** needs to run, you can use this command in the terminal:
+<details>
+<summary>Windows</summary>
+<br>
 
-```sudo apt install gcc python python-is-python3 openjdk-17-jre-headless make```
+- Install `gcc` by following [this video tutorial](https://www.youtube.com/watch?v=k6juv3mIr9o).
 
-Note that if you're running Linux, you might need to use a different package manager depending on your distro (e.g. `pacman`, `flatpak`, etc).
+- Install `make` by downloading and running the setup file from [this page](https://sourceforge.net/projects/gnuwin32/files/make/3.81/).
+    - Select the `make-3.81.exe` option in the download page.
+    - Similar to the video above, add the `C:\Program Files (x86)\GnuWin32\bin` folder to your **PATH** environment variable (or whichever folder you chose for the installation).
+
+- Install `python` from [the official website](https://www.python.org).
+    - Hover over [**Downloads**], then click the download button right under [**Download for Windows**].
+    - When running the installer, make sure to select [**Add python.exe to PATH**] on the first screen.
+
+- Install `java` from [this page](https://www.oracle.com/java/technologies/downloads/#jdk17-windows).
+    - Add the `C:\Program Files\Java\jdk-17\bin` folder to your **PATH** environment variable (or whichever folder you chose for the installation).
+    - Create a new environment variable called **JAVA_HOME**, and add the `C:\Program Files\Java\jdk-17` folder into it (same folder as the previous step, but without the `bin`).
+
+After that, you'll have your dependencies ready.
+
+Alternatively, if you wish, you can follow the first half of [this tutorial](https://www.youtube.com/watch?v=Gl7zOn2lLo4) to install and set up a **Windows Subsystem for Linux**, and then follow the **Linux** section of this tutorial from there. This is more complicated, but can result in better filter performance.
+</details>
+
+<details>
+<summary>Linux</summary>
+<br>
+
+If you're on a Debian-based distribution (e.g. Ubuntu, etc), you can use the following command to install all the dependencies at once.
+
+```sudo apt install gcc make python openjdk-17-jre-headless```
+
+Depending on your distro, you may have to replace `apt` with your native package manager (e.g. `pacman`, etc).
+
+</details>
+
+<details>
+<summary>Mac</summary>
+<br>
+
+You can install all the required dependencies using the Homebrew package manager, with the following command:
+
+```brew install gcc make python java```
+
+</details>
+
+<br>
 
 After installing those packages, you can now start using **GoATS**.
 
 ## Usage
 
-Before jumping in, make sure again that your terminal has been opened in the same folder you've extracted **GoATS** into. Compile the seedfinding code into an executable by running the command:
+Open a console/terminal window in the same folder you've extracted **GoATS** into. Compile the seedfinding code into an executable by running the command:
 
 ```make compile```
 
@@ -45,7 +86,9 @@ Once you're done editing the file, use the command:
 
 ```make py```
 
-This will save the filter configuration to `data/filter.txt`, which gets read by the seedfinding program itself. It will also save the corresponding filter code to the filter history file (`data/filterhistory.txt`), so that you may access it in the future if needed. If you want to skip being asked to name the filter, you can use the command:
+This will save the filter configuration to `data/filter.txt`, which gets read by the seedfinding program itself. It will also save the corresponding filter code to the filter history file (`data/filterhistory.txt`), so that you may access it in the future if needed. 
+
+Alternatively, if you want to skip being asked to name the filter, you can use the command:
 
 ```make pyn```
 
@@ -55,11 +98,11 @@ From there, you can automatically filter for the things you asked for by using t
 
 ```make run```
 
-This will print a list of every matching seed the program encounters, along with some relevant statistics at the end. If you wish to output the results into a file instead of printing them, you can do:
+This will print a list of every matching seed the program encounters, along with some relevant statistics at the end. If you wish to output the results into a file instead of printing them, you can do for example:
 
 ```make run > examplefile.txt```
 
-To filter for something else, change the `config.py` file accordingly, run the Python script again using `make py` to save the new filter, and then just use `make run` again - no recompilation is required for changes to the filter.
+To filter for something else, change the `config.py` file accordingly, use `make py` again to save the new filter, and then just use `make run` again - no recompilation is required for changes to the filter.
 
 ### Multi-threading
 
@@ -94,7 +137,7 @@ This program also comes with some extra features in the form of external scripts
 
 #### `make lavachecker`
 
-- Reads through the `data/seedinfo.txt` file and checks every potential lava pool in each seed, using Minecraft's own world-gen code to determine which ones actually successfuly generate
+- Reads through the `data/seedinfo.txt` file (if it exists) and checks every potential lava pool in each seed, using Minecraft's own world-gen code to determine which ones actually successfuly generate
 - Outputs all seeds with successfully generating lava pools in `data/lavachecker_seedinfo.txt`
 - 100% accurate for 1.16+, but takes around 2 seconds per seed
 
@@ -108,6 +151,6 @@ If you have questions, suggestions, complaints, or anything of the sort, feel fr
 
 Special thanks go out to:
 - **Al3xanDE_17**, for inspiring me to dive into Minecraft tournament seedfinding and to create this project
-- **AndyNovo**, for creating the FSG filters, which were an extremely helpful reference for the program's logic as well as many features
+- **AndyNovo**, for creating the [FSG filters](https://replit.com/@AndyNovo), which were an extremely helpful reference for the program's logic as well as many features
 - **Cubitect**, for developing and open-sourcing [Cubiomes](https://github.com/cubitect/cubiomes), the primary technical backbone for C seedfinding in general
-- **JelleJurre**, for making [seed-checker](https://github.com/jellejurre/seed-checker), which was used for the lava pool checking command, as well as making the FSG (+ WSL) video tutorial linked above
+- **JelleJurre**, for making [seed-checker](https://github.com/jellejurre/seed-checker), which was used for the Java side of this project, such as the lava checker script

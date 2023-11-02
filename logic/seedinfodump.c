@@ -2,7 +2,7 @@
 #include "../module/filter.h"
 
 void write_seed_info(int64_t seed, SeedInfo* seed_info, Filter* filter, FILE* seed_info_file) {
-	fprintf(seed_info_file, "SEED\n%ld\n", seed);
+	fprintf(seed_info_file, "SEED\n%lld\n", seed);
 
 	if (filter->SPAWN_POINT) {
 		fprintf(seed_info_file, "SPAWN\n");
