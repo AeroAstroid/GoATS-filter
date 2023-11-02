@@ -3,6 +3,8 @@ ifeq (run,$(firstword $(MAKECMDGOALS)))
   $(eval $(ARGS):;@:)
 endif
 
+PYTHON := python3
+
 L_CUBIOMES := $(filter-out ./libs/cubiomes/tests.c,$(wildcard ./libs/cubiomes/*.c))
 L_SFMT := ./libs/sfmt/SFMT.c
 
@@ -10,10 +12,10 @@ compile:
 	gcc main.c ./module/*.c ./filters/*.c ./logic/*.c $(L_CUBIOMES) $(L_SFMT) -lm -pthread -Ofast -DSFMT_MEXP=19937 -g -mavx -o seed
 
 py:
-	python config.py
+	$(PYTHON) config.py
 
 pyn:
-	python config.py noname
+	$(PYTHON) config.py noname
 
 run:
 	./seed $(ARGS)
