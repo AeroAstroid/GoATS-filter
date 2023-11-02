@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "../libs/cubiomes/rng.h"
+#include "../submodules/cubiomes/rng.h"
 
 void shuffle(uint64_t *seed, int *ind, int n_ind) {
     for (int i = n_ind; i > 1; i--) {

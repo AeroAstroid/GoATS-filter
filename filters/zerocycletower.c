@@ -1,5 +1,5 @@
-#include "../libs/cubiomes/rng.h"
-#include "../module/mathutils.h"
+#include "../submodules/cubiomes/rng.h"
+#include "../util/mathutils.h"
 #include <stdio.h>
 
 int zero_cycle_towers(int64_t seed, int mc_version, int zero_direction, int zero_towers) {

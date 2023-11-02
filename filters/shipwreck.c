@@ -1,8 +1,8 @@
 #include <stdint.h>
 #include <stdio.h>
-#include "../libs/cubiomes/finders.h"
-#include "../module/filter.h"
-#include "../module/mathutils.h"
+#include "../submodules/cubiomes/finders.h"
+#include "../util/filter.h"
+#include "../util/mathutils.h"
 
 int shipwreck_type(int64_t seed, SeedInfo* seed_info, int allowed_types) {
 	int viable_ships = 0;

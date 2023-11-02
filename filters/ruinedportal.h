@@ -1,6 +1,6 @@
 #include <stdint.h>
-#include "../libs/cubiomes/generator.h"
-#include "../module/filter.h"
+#include "../submodules/cubiomes/generator.h"
+#include "../util/filter.h"
 
 int ruined_portal_pos(int64_t seed, SeedInfo* seed_info, int max_dist, int mc_version);
 int lava_portal(int64_t seed, SeedInfo* seed_info);

@@ -13,9 +13,9 @@
 #include "../filters/zerocycletower.h"
 #include "../filters/endisland.h"
 
-#include "../module/filter.h"
+#include "../util/filter.h"
 
-#include "../libs/cubiomes/biomes.h"
+#include "../submodules/cubiomes/biomes.h"
 
 int structureFilterLogic(int64_t seed, SeedInfo* seed_info, Filter* filter) {
 	if (filter->BASTION) {

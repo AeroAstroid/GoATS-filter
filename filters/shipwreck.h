@@ -1,6 +1,6 @@
 #include <stdint.h>
-#include "../libs/cubiomes/finders.h"
-#include "../module/filter.h"
+#include "../submodules/cubiomes/finders.h"
+#include "../util/filter.h"
 
 int shipwreck_type(int64_t lower48, SeedInfo* seed_info, int allowed_types);
 int shipwreck_pos(int64_t lower48, SeedInfo* seed_info, int range, int quadrants, int mc_version);

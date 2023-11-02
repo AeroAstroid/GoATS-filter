@@ -3,11 +3,11 @@
 
 #include <string.h>
 
-#include "libs/sfmt/SFMT.h"
+#include "submodules/sfmt/SFMT.h"
 
-#include "module/mathutils.h"
-#include "module/filter.h"
-#include "module/timedelta.h"
+#include "util/mathutils.h"
+#include "util/filter.h"
+#include "util/timedelta.h"
 
 #include "logic/logic.h"
 #include "logic/seedinfodump.h"

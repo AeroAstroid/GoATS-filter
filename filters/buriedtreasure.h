@@ -1,5 +1,5 @@
-#include "../libs/cubiomes/rng.h"
-#include "../module/filter.h"
+#include "../submodules/cubiomes/rng.h"
+#include "../util/filter.h"
 
 int bt_at_chunk(int64_t lower48, int chunkX, int chunkZ);
 int buried_treasure(int64_t lower48, SeedInfo* seed_info, int bt_min, int exc_range, int allowed_quadrants);

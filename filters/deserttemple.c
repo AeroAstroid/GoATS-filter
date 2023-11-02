@@ -1,7 +1,7 @@
 #include <stdio.h>
-#include "../module/mathutils.h"
-#include "../libs/cubiomes/finders.h"
-#include "../module/filter.h"
+#include "../util/mathutils.h"
+#include "../submodules/cubiomes/finders.h"
+#include "../util/filter.h"
 
 // Finds a desert temple within a certain distance of origin
 int desert_temple_pos(int64_t lower48, SeedInfo* seed_info, int range, int quadrants, int mc_version) {

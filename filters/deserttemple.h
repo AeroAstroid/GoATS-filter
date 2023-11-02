@@ -1,5 +1,5 @@
-#include "../libs/cubiomes/finders.h"
-#include "../module/filter.h"
+#include "../submodules/cubiomes/finders.h"
+#include "../util/filter.h"
 
 int desert_temple_pos(int64_t lower48, SeedInfo* seed_info, int range, int quadrants, int mc_version);
 int desert_temple_biome(int64_t seed, SeedInfo* seed_info, Generator* world_gen);

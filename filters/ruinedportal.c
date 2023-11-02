@@ -1,6 +1,6 @@
 #include <stdint.h>
-#include "../libs/cubiomes/finders.h"
-#include "../module/filter.h"
+#include "../submodules/cubiomes/finders.h"
+#include "../util/filter.h"
 
 // Ruined portal within max_dist of spawn in pos pos region
 int ruined_portal_pos(int64_t seed, SeedInfo* seed_info, int max_dist, int mc_version) {

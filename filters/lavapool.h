@@ -1,6 +1,6 @@
 #include <stdint.h>
-#include "../libs/cubiomes/finders.h"
-#include "../module/filter.h"
+#include "../submodules/cubiomes/finders.h"
+#include "../util/filter.h"
 
 int potential_desert_lava(int64_t lower48, int x, int z, int* lx, int* lz);
 int default_lava(int64_t lower48, int x, int z, int* lx, int* lz);

@@ -5,11 +5,11 @@ endif
 
 PYTHON := python3
 
-L_CUBIOMES := $(filter-out ./libs/cubiomes/tests.c,$(wildcard ./libs/cubiomes/*.c))
-L_SFMT := ./libs/sfmt/SFMT.c
+L_CUBIOMES := $(filter-out ./submodules/cubiomes/tests.c,$(wildcard ./submodules/cubiomes/*.c))
+L_SFMT := ./submodules/sfmt/SFMT.c
 
 compile:
-	gcc main.c ./module/*.c ./filters/*.c ./logic/*.c $(L_CUBIOMES) $(L_SFMT) -lm -pthread -Ofast -DSFMT_MEXP=19937 -g -mavx -o seed
+	gcc main.c ./filters/*.c ./logic/*.c ./util/*.c $(L_CUBIOMES) $(L_SFMT) -lm -pthread -Ofast -DSFMT_MEXP=19937 -g -mavx -o seed
 
 py:
 	$(PYTHON) config.py

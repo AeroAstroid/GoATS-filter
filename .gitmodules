@@ -1,6 +1,6 @@
-[submodule "libs/cubiomes"]
-	path = libs/cubiomes
+[submodule "submodules/cubiomes"]
+	path = submodules/cubiomes
 	url = https://github.com/Cubitect/cubiomes.git
-[submodule "libs/sfmt"]
-	path = libs/sfmt
+[submodule "submodules/sfmt"]
+	path = submodules/sfmt
 	url = https://github.com/MersenneTwister-Lab/SFMT.git

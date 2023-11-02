@@ -1,6 +1,6 @@
 #include <stdint.h>
-#include "../libs/cubiomes/finders.h"
-#include "../module/filter.h"
+#include "../submodules/cubiomes/finders.h"
+#include "../util/filter.h"
 
 int fsg_stronghold_angle(int64_t seed, SeedInfo* seed_info, int max_dist, int mc_version);
 

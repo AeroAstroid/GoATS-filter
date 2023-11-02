@@ -1,8 +1,8 @@
 #include <stdint.h>
 #include <stdio.h>
-#include "../libs/cubiomes/finders.h"
-#include "../module/mathutils.h"
-#include "../module/filter.h"
+#include "../submodules/cubiomes/finders.h"
+#include "../util/mathutils.h"
+#include "../util/filter.h"
 
 // Finds whether there's a stronghold at the correct angle for FSG stronghold
 // Technically also checks spawn dist for that SH instead of just angle. Overfiltering, but way faster than an arctan

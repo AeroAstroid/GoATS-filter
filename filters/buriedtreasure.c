@@ -1,6 +1,6 @@
-#include "../libs/cubiomes/rng.h"
-#include "../module/filter.h"
-#include "../module/mathutils.h"
+#include "../submodules/cubiomes/rng.h"
+#include "../util/filter.h"
+#include "../util/mathutils.h"
 #include <stdio.h>
 
 // Whether a given chunk attempts to generate a BT
