@@ -1,5 +1,8 @@
 #include <stdint.h>
+
 #include "../util/filter.h"
+
+#include "../submodules/cubiomes/generator.h"
 
 int ravine_at_chunk(int64_t lower48, int chunkX, int chunkZ, int* rx, int* rz);
 int magma_ravine(int64_t lower48, int range, int quadrants, SeedInfo* seed_info);

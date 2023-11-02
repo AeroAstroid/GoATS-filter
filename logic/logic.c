@@ -1,21 +1,29 @@
+#include <stdint.h>
+
+#include "../filters/shipwreck.h"
+#include "../filters/ruinedportal.h"
 #include "../filters/buriedtreasure.h"
-#include "../filters/jungletemple.h"
+#include "../filters/village.h"
 #include "../filters/deserttemple.h"
+#include "../filters/jungletemple.h"
+
+#include "../filters/lavapool.h"
 #include "../filters/magmaravine.h"
+
 #include "../filters/bastion.h"
 #include "../filters/fortress.h"
-#include "../filters/ruinedportal.h"
-#include "../filters/shipwreck.h"
-#include "../filters/village.h"
+
 #include "../filters/stronghold.h"
-#include "../filters/lavapool.h"
-#include "../filters/spawn.h"
+
 #include "../filters/zerocycletower.h"
 #include "../filters/endisland.h"
+
+#include "../filters/spawn.h"
 
 #include "../util/filter.h"
 
 #include "../submodules/cubiomes/biomes.h"
+#include "../submodules/cubiomes/generator.h"
 
 int structureFilterLogic(int64_t seed, SeedInfo* seed_info, Filter* filter) {
 	if (filter->BASTION) {

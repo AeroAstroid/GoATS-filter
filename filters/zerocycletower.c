@@ -1,6 +1,8 @@
-#include "../submodules/cubiomes/rng.h"
+#include <stdint.h>
+
 #include "../util/mathutils.h"
-#include <stdio.h>
+
+#include "../submodules/cubiomes/rng.h"
 
 int zero_cycle_towers(int64_t seed, int mc_version, int zero_direction, int zero_towers) {
 	int ind[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};

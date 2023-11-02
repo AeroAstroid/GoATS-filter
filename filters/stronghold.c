@@ -1,13 +1,14 @@
 #include <stdint.h>
-#include <stdio.h>
-#include "../submodules/cubiomes/finders.h"
-#include "../util/mathutils.h"
+
 #include "../util/filter.h"
+
+#include "../submodules/cubiomes/finders.h"
+#include "../submodules/cubiomes/generator.h"
 
 // Finds whether there's a stronghold at the correct angle for FSG stronghold
 // Technically also checks spawn dist for that SH instead of just angle. Overfiltering, but way faster than an arctan
 // Only needs to check the first stronghold, hence doesn't require full seed(?)
-int fsg_stronghold_angle(int64_t seed, SeedInfo* seed_info, int max_dist, int mc_version) {
+int fsg_stronghold_angle(int64_t lower48, SeedInfo* seed_info, int max_dist, int mc_version) {
 	// signs for x/z in each region ->  0  |  1  |  2  |  3
 	int x_mult[4] = {1, -1, 1, -1}; // pos | neg | pos | neg
 	int z_mult[4] = {1, 1, -1, -1}; // pos | pos | neg | neg
@@ -36,7 +37,7 @@ int fsg_stronghold_angle(int64_t seed, SeedInfo* seed_info, int max_dist, int mc
 	}
 
 	StrongholdIter sh_iterator;
-	Pos pos_sh = initFirstStronghold(&sh_iterator, mc_version, seed);
+	Pos pos_sh = initFirstStronghold(&sh_iterator, mc_version, lower48);
 	
 	// Distances for each stronghold
 	long dist1, dist2, dist3;

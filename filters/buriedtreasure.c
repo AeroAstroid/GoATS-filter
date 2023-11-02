@@ -1,7 +1,11 @@
-#include "../submodules/cubiomes/rng.h"
+#include <stdint.h>
+
 #include "../util/filter.h"
 #include "../util/mathutils.h"
-#include <stdio.h>
+
+#include "../submodules/cubiomes/finders.h"
+#include "../submodules/cubiomes/generator.h"
+#include "../submodules/cubiomes/rng.h"
 
 // Whether a given chunk attempts to generate a BT
 int bt_at_chunk(int64_t lower48, int chunkX, int chunkZ){

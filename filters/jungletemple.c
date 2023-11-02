@@ -1,6 +1,10 @@
-#include "../submodules/cubiomes/finders.h"
+#include <stdint.h>
+
 #include "../util/filter.h"
 #include "../util/mathutils.h"
+
+#include "../submodules/cubiomes/finders.h"
+#include "../submodules/cubiomes/generator.h"
 
 // Finds a jungle temple within max_dist chunks in any quadrant
 int jungle_temple_pos(int64_t lower48, SeedInfo* seed_info, int range, int allowed_quadrants, int mc_version) {

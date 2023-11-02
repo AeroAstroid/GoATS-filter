@@ -1,7 +1,10 @@
 #include <stdint.h>
-#include "../submodules/cubiomes/finders.h"
+
 #include "../util/filter.h"
 #include "../util/mathutils.h"
+
+#include "../submodules/cubiomes/finders.h"
+#include "../submodules/cubiomes/generator.h"
 
 // Finds a village within max_dist chunks in any quadrant
 int village_pos(int64_t lower48, SeedInfo* seed_info, int max_dist, int quadrants, int mc_version) {

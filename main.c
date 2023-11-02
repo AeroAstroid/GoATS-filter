@@ -1,19 +1,16 @@
+#include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
-
-#include <string.h>
-
-#include "submodules/sfmt/SFMT.h"
-
-#include "util/mathutils.h"
-#include "util/filter.h"
-#include "util/timedelta.h"
+#include <time.h>
 
 #include "logic/logic.h"
 #include "logic/seedinfodump.h"
 
-#include <time.h>
-#include <pthread.h>
+#include "util/filter.h"
+#include "util/mathutils.h"
+#include "util/timedelta.h"
+
+#include "submodules/sfmt/SFMT.h"
 
 #define LOCK_THREADS pthread_mutex_lock(&mutex)
 #define UNLOCK_THREADS pthread_mutex_unlock(&mutex)

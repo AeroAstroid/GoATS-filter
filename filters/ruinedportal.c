@@ -1,13 +1,17 @@
 #include <stdint.h>
-#include "../submodules/cubiomes/finders.h"
+
 #include "../util/filter.h"
 
+#include "../submodules/cubiomes/finders.h"
+#include "../submodules/cubiomes/generator.h"
+#include "../submodules/cubiomes/rng.h"
+
 // Ruined portal within max_dist of spawn in pos pos region
-int ruined_portal_pos(int64_t seed, SeedInfo* seed_info, int max_dist, int mc_version) {
+int ruined_portal_pos(int64_t lower48, SeedInfo* seed_info, int max_dist, int mc_version) {
 	Pos rp_pos;
 	
 	// Use return code to deduce success
-	if (!getStructurePos(Ruined_Portal, mc_version, seed, 0, 0, &rp_pos)) {
+	if (!getStructurePos(Ruined_Portal, mc_version, lower48, 0, 0, &rp_pos)) {
 		return 0;
 	}
 
@@ -22,11 +26,11 @@ int ruined_portal_pos(int64_t seed, SeedInfo* seed_info, int max_dist, int mc_ve
 	long chunkX = rp_pos.x >> 4;
 	long chunkZ = rp_pos.z >> 4;
 
-	int64_t finder_seed = seed ^ 0x5DEECE66DL;
+	int64_t finder_seed = lower48 ^ 0x5DEECE66DL;
 	int64_t carveX = nextLong(&finder_seed);
 	int64_t carveZ = nextLong(&finder_seed);
 
-	finder_seed = ((chunkX * carveX) ^ (chunkZ * carveZ) ^ seed) ^ 0x5DEECE66DL;
+	finder_seed = ((chunkX * carveX) ^ (chunkZ * carveZ) ^ lower48) ^ 0x5DEECE66DL;
 	finder_seed = finder_seed & 0xFFFFFFFFFFFF;
 
 	// Roll for whether or not the portal is buried (50/50)
@@ -41,16 +45,16 @@ int ruined_portal_pos(int64_t seed, SeedInfo* seed_info, int max_dist, int mc_ve
 }
 
 // Returns only portal types with a substantial amount of lava
-int lava_portal(int64_t seed, SeedInfo* seed_info) {
+int lava_portal(int64_t lower48, SeedInfo* seed_info) {
 	long chunkX = seed_info->ruined_portal.x >> 4;
 	long chunkZ = seed_info->ruined_portal.z >> 4;
 
-	int64_t finder_seed = seed ^ 0x5DEECE66DL;
+	int64_t finder_seed = lower48 ^ 0x5DEECE66DL;
 
 	long carveX = nextLong(&finder_seed);
 	long carveZ = nextLong(&finder_seed);
 	
-	finder_seed = ((chunkX * carveX) ^ (chunkZ * carveZ) ^ seed) ^ 0x5DEECE66DL;
+	finder_seed = ((chunkX * carveX) ^ (chunkZ * carveZ) ^ lower48) ^ 0x5DEECE66DL;
 	finder_seed = finder_seed & 0xFFFFFFFFFFFFL;
 
 	nextFloat(&finder_seed); // Underground/aboveground roll (already checked in the position function)

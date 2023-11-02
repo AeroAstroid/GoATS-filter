@@ -1,8 +1,10 @@
 #include <stdint.h>
-#include <stdio.h>
-#include "../submodules/cubiomes/finders.h"
+
 #include "../util/filter.h"
 #include "../util/mathutils.h"
+
+#include "../submodules/cubiomes/generator.h"
+#include "../submodules/cubiomes/rng.h"
 
 int ravine_at_chunk(int64_t lower48, int chunkX, int chunkZ, int* rx, int* rz) {
 	int64_t finder_seed = (lower48) ^ 0x5DEECE66DL;

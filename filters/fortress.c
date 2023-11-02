@@ -1,7 +1,10 @@
-#include <stdio.h>
 #include <stdint.h>
+#include <stdlib.h>
+
 #include "../util/filter.h"
 #include "../util/mathutils.h"
+
+#include "../submodules/cubiomes/finders.h"
 
 // Finds a fortress within a certain distance of origin
 int fortress_pos(int64_t lower48, SeedInfo* seed_info, int range, int allowed_quadrants, int mc_version) {

@@ -1,7 +1,9 @@
-#include <stdio.h>
 #include <stdint.h>
-#include "../submodules/cubiomes/finders.h"
+
 #include "../util/filter.h"
+
+#include "../submodules/cubiomes/generator.h"
+#include "../submodules/cubiomes/rng.h"
 
 // Structure seed call for potential desert lava pools
 // Deserts do not generate water lakes, so we skip those calls instead of simulating them
