@@ -1,6 +1,7 @@
 [submodule "submodules/cubiomes"]
 	path = submodules/cubiomes
-	url = https://github.com/Cubitect/cubiomes.git
+	url = https://github.com/AeroAstroid/cubiomes.git
+	branch = goats-filter
 [submodule "submodules/sfmt"]
 	path = submodules/sfmt
-	url = https://github.com/MersenneTwister-Lab/SFMT.git
+	url = https://github.com/MersenneTwister-Lab/SFMT
