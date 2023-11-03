@@ -32,7 +32,7 @@ SHIP_TYPES = {	# Types of shipwreck. Setting one to False removes it from filter
 	"BACK": True,	# Back half only
 	"FULL": True	# Both halves
 }
-SHIP_LOOT = {	# Minimum requirements for different types of loot:
+SHIP_LOOT = {	# Minimum requirements for different types of loot (doesn't work in 1.13)
 	"IRON": 0,		# Amount of iron ingots (plus craftable from nuggets)
 	"GOLD": 0,		# Amount of gold ingots (plus craftable from nuggets)
 	"EMERALD": 0,	# Amount of emeralds

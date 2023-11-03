@@ -7,7 +7,7 @@
 #include "../submodules/cubiomes/generator.h"
 #include "../submodules/cubiomes/rng.h"
 
-int shipwreck_type(int64_t seed, SeedInfo* seed_info, int allowed_types) {
+int shipwreck_type(int64_t lower48, SeedInfo* seed_info, int allowed_types) {
 	int viable_ships = 0;
 
 	for (int i = 0; i < seed_info->ship_count; i++) {
@@ -111,7 +111,9 @@ int shipwreck_biome(int64_t seed, SeedInfo* seed_info, Generator* world_gen) {
 	return 0;
 }
 
-int shipwreck_loot(int64_t seed, SeedInfo* seed_info, ShipLootRequirements* ship_loot) {
+int shipwreck_loot(int64_t lower48, SeedInfo* seed_info, ShipLootRequirements* ship_loot, int mc_version) {
+	int salt = mc_version < MC_1_16 ? 30005 : 40006;
+
 	// The offset of the chunk the treasure chest is located in relative to the main chunk
 	// for each ship type and rotation. Necessary to know which chunk the chest is in
 	int treasure_offset_table[] = {
@@ -150,7 +152,7 @@ int shipwreck_loot(int64_t seed, SeedInfo* seed_info, ShipLootRequirements* ship
 	// Depending on chest generation order within the chunk + other factors
 	// the amount of useless calls we must skip to simulate the treasure chest can be different
 	// This table encodes how many calls to skip for each ship type and rotation
-	int treasure_skip_calls[] = {
+	int treasure_skip_calls_116[] = {
 	//	r0	r1	r2	r3
 		6,	2,	6,	6,
 		4,	2,	4,	4,
@@ -163,7 +165,10 @@ int shipwreck_loot(int64_t seed, SeedInfo* seed_info, ShipLootRequirements* ship
 		0,	0,	0,	0,	// NO T.CHEST
 		6,	6,	6,	2
 	};
-	// For the record, the food chest always requires 2 skipped calls exactly
+	// For pre-1.16 the table is remapped: any 6-call rotations get reduced to 2
+	// and any 4 and 2-call rotations get reduced to 0. Not entirely sure why
+
+	// The food chest always requires 2 skipped calls exactly in 1.16 and 0 before then
 
 	// Piece configuration of every ship type
 	// 0 = full, 1 = back half, 2 = front half
@@ -192,18 +197,20 @@ int shipwreck_loot(int64_t seed, SeedInfo* seed_info, ShipLootRequirements* ship
 		if (type_pieces[ship_type] != 1) {
 			int64_t finder_seed = (seed) ^ 0x5DEECE66DLL;
 
-			long carveX = nextLong(&finder_seed) | 1;
-			long carveZ = nextLong(&finder_seed) | 1;
+			int64_t carveX = nextLong(&finder_seed) | 1;
+			int64_t carveZ = nextLong(&finder_seed) | 1;
 
 			int x_off = food_offset_table[ship_type * 8 + ship_rot * 2];
 			int z_off = food_offset_table[ship_type * 8 + ship_rot * 2 + 1];
 
-			finder_seed = (long)(ship_pos.x + x_off * 16) * carveX + (long)(ship_pos.z + z_off * 16) * carveZ;
+			finder_seed = (int64_t)(ship_pos.x + x_off * 16) * carveX + (int64_t)(ship_pos.z + z_off * 16) * carveZ;
 			finder_seed = finder_seed ^ seed & 0xFFFFFFFFFFFFLL;
-			finder_seed = (finder_seed + 40006) ^ 0x5DEECE66DLL;
+			finder_seed = (finder_seed + salt) ^ 0x5DEECE66DLL;
 
-			// always advance 2 calls for the food chest
-			for (int i = 0; i < 2; i++) nextInt(&finder_seed, 1);
+			// amount of skipped calls changes with version but is constant w/ ship type
+			int skipped_calls = (mc_version < MC_1_16) ? 0 : 2;
+
+			skipNextN(&finder_seed, skipped_calls);
 
 			int64_t loot_table_seed = (int64_t)nextLong(&finder_seed) ^ 0x5DEECE66DLL;
 
@@ -212,6 +219,7 @@ int shipwreck_loot(int64_t seed, SeedInfo* seed_info, ShipLootRequirements* ship
 			//	wei	min	max
 				8,	1,	12,	// paper
 				7,	2,	6,	// potato
+				7,	1,	4,	// moss (1.17+)
 				7,	2,	6,	// poisoned potato
 				7,	4,	8,	// carrot
 				7,	8,	21,	// wheat
@@ -228,19 +236,36 @@ int shipwreck_loot(int64_t seed, SeedInfo* seed_info, ShipLootRequirements* ship
 				3,	0,	0	// leather boots
 			};
 
+			// sum of all item weights
+			int food_chest_weight = 84;
+
+			if (mc_version < MC_1_17) {
+				// remove moss from the possible outcomes
+				food_chest_weight = 77;
+				loot_table[3*2] = 0;
+			}
+
 			// holds the number of enchants (e_n) each enchantable item can have
 			// for each item, list all the single-level enchant IDs for which the level call must be ignored
 			int enchant_table[] = {
+			//	e_n		1-level enchants
 				11,		5,	7,	9,	10,		// leather helmet
 				9,		5,	7,	8,	-1,		// leather chestplate
 				9,		5,	7,	8,	-1,		// leather leggings
 				13,		8,	11,	12,	-1		// leather boots
 			};
 
+			// for pre-1.16, the boot enchantments change due to no soul speed
+			if (mc_version < MC_1_16) {
+				enchant_table[5*3]--; // minus one to number of possible enchants
+				enchant_table[5*3+2]--; // mending gets pushed back 1 ID since soul speed is removed
+				enchant_table[5*3+3]--; // same with curse of vanishing
+			}
+
 			int loot_rolls = 3 + nextInt(&loot_table_seed, 8); // 3-10 calls to the table
 
 			for (int roll = 0; roll < loot_rolls; roll++) {
-				int loot_value = nextInt(&loot_table_seed, 77);
+				int loot_value = nextInt(&loot_table_seed, food_chest_weight);
 				int item_id;
 
 				for (item_id = 0; loot_value > 0; ) {
@@ -260,13 +285,12 @@ int shipwreck_loot(int64_t seed, SeedInfo* seed_info, ShipLootRequirements* ship
 					item_count = min_count + nextInt(&loot_table_seed, max_count - min_count + 1);
 				}
 
-				if (item_id == 5) { // suspicious stew
-					// skip 2 calls for the effect roll
-					for (int i = 0; i < 2; i++) nextInt(&finder_seed, 1);
+				if (item_id == 6) { // suspicious stew
+					skipNextN(&loot_table_seed, 2); // stew effect roll
 				}
 
-				if (item_id >= 12) {
-					int e_n_index = 5 * (item_id - 12);
+				if (item_id >= 13) {
+					int e_n_index = 5 * (item_id - 13);
 					int enchant_id = nextInt(&loot_table_seed, enchant_table[e_n_index]);
 
 					if (enchant_id != enchant_table[e_n_index + 1] &&
@@ -274,20 +298,19 @@ int shipwreck_loot(int64_t seed, SeedInfo* seed_info, ShipLootRequirements* ship
 						enchant_id != enchant_table[e_n_index + 3] &&
 						enchant_id != enchant_table[e_n_index + 4]) {
 						
-						// skip the levels call
-						nextInt(&loot_table_seed, 1);
+						skipNextN(&loot_table_seed, 1); // levels call, we don't care
 					}
 				}
 
-				if (item_id == 3) {
+				if (item_id == 4) {
 					carrot_count += item_count;
 				}
 
-				if (item_id == 4) {
+				if (item_id == 5) {
 					wheat_count += item_count;
 				}
 
-				if (item_id == 11) {
+				if (item_id == 12) {
 					tnt_count += item_count;
 				}
 			}
@@ -297,18 +320,24 @@ int shipwreck_loot(int64_t seed, SeedInfo* seed_info, ShipLootRequirements* ship
 		if (type_pieces[ship_type] != 2) {
 			int64_t finder_seed = (seed) ^ 0x5DEECE66DLL;
 
-			long carveX = nextLong(&finder_seed) | 1;
-			long carveZ = nextLong(&finder_seed) | 1;
+			int64_t carveX = nextLong(&finder_seed) | 1;
+			int64_t carveZ = nextLong(&finder_seed) | 1;
 
 			int x_off = treasure_offset_table[ship_type * 8 + ship_rot * 2];
 			int z_off = treasure_offset_table[ship_type * 8 + ship_rot * 2 + 1];
 
-			finder_seed = (long)(ship_pos.x + x_off * 16) * carveX + (long)(ship_pos.z + z_off * 16) * carveZ;
+			finder_seed = (int64_t)(ship_pos.x + x_off * 16) * carveX + (int64_t)(ship_pos.z + z_off * 16) * carveZ;
 			finder_seed = finder_seed ^ seed & 0xFFFFFFFFFFFFLL;
-			finder_seed = (finder_seed + 40006) ^ 0x5DEECE66DLL;
+			finder_seed = (finder_seed + salt) ^ 0x5DEECE66DLL;
 
-			// advance the appropriate number of calls depending on ship
-			for (int i = 0; i < treasure_skip_calls[ship_type * 4 + ship_rot]; i++) nextInt(&finder_seed, 1);
+			// advance the appropriate number of calls depending on ship and version
+			int skipped_calls = treasure_skip_calls_116[ship_type * 4 + ship_rot];
+
+			if (mc_version < MC_1_16) { // remove calls for pre-1.16
+				skipped_calls = (skipped_calls == 6) ? 2 : 0;
+			}
+
+			skipNextN(&finder_seed, skipped_calls);
 
 			int64_t loot_table_seed = (int64_t)nextLong(&finder_seed) ^ 0x5DEECE66DLL;
 

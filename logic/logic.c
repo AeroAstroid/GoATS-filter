@@ -100,6 +100,18 @@ int structureFilterLogic(int64_t seed, SeedInfo* seed_info, Filter* filter) {
 		if (!shipwreck_pos(seed, seed_info, filter->ship_range, filter->ship_quadrants, filter->mc_version)) {
 			return 0;
 		}
+
+		if (filter->ship_types != 0b111) {
+			if (!shipwreck_type(seed, seed_info, filter->ship_types)) {
+				return 0;
+			}
+		}
+
+		if (filter->check_ship_loot) {
+			if(!shipwreck_loot(seed, seed_info, filter->ship_loot, filter->mc_version)) {
+				return 0;
+			}
+		}
 	}
 
 	if (filter->JUNGLE_TEMPLE) {
@@ -183,18 +195,6 @@ int biomeFilterLogic(int64_t seed, SeedInfo* seed_info, Filter* filter, Generato
 	}
 
 	if (filter->SHIPWRECK) {
-		if (filter->ship_types != 0b111) {
-			if (!shipwreck_type(seed, seed_info, filter->ship_types)) {
-				return 0;
-			}
-		}
-
-		if (filter->check_ship_loot) {
-			if(!shipwreck_loot(seed, seed_info, filter->ship_loot)) {
-				return 0;
-			}
-		}
-		
 		if (!shipwreck_biome(seed, seed_info, world_gen)) {
 			return 0;
 		}
