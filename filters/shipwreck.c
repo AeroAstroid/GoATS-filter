@@ -16,12 +16,12 @@ int shipwreck_type(int64_t lower48, SeedInfo* seed_info, int allowed_types) {
 		int chunkX = ship_pos.x >> 4;
 		int chunkZ = ship_pos.z >> 4;
 
-		int64_t finder_seed = seed ^ 0x5DEECE66DLL;
+		int64_t finder_seed = lower48 ^ 0x5DEECE66DLL;
 
 		int64_t carveX = nextLong(&finder_seed);
 		int64_t carveZ = nextLong(&finder_seed);
 
-		finder_seed = ((chunkX * carveX) ^ (chunkZ * carveZ) ^ seed) ^ 0x5DEECE66DLL;
+		finder_seed = ((chunkX * carveX) ^ (chunkZ * carveZ) ^ lower48) ^ 0x5DEECE66DLL;
 		finder_seed = finder_seed & 0xFFFFFFFFFFFFLL;
 
 		int rotation = nextInt(&finder_seed, 4);
@@ -195,7 +195,7 @@ int shipwreck_loot(int64_t lower48, SeedInfo* seed_info, ShipLootRequirements* s
 
 		// FRONT HALF CHEST LOOT (FOOD CHEST)
 		if (type_pieces[ship_type] != 1) {
-			int64_t finder_seed = (seed) ^ 0x5DEECE66DLL;
+			int64_t finder_seed = (lower48) ^ 0x5DEECE66DLL;
 
 			int64_t carveX = nextLong(&finder_seed) | 1;
 			int64_t carveZ = nextLong(&finder_seed) | 1;
@@ -204,7 +204,7 @@ int shipwreck_loot(int64_t lower48, SeedInfo* seed_info, ShipLootRequirements* s
 			int z_off = food_offset_table[ship_type * 8 + ship_rot * 2 + 1];
 
 			finder_seed = (int64_t)(ship_pos.x + x_off * 16) * carveX + (int64_t)(ship_pos.z + z_off * 16) * carveZ;
-			finder_seed = finder_seed ^ seed & 0xFFFFFFFFFFFFLL;
+			finder_seed = finder_seed ^ lower48 & 0xFFFFFFFFFFFFLL;
 			finder_seed = (finder_seed + salt) ^ 0x5DEECE66DLL;
 
 			// amount of skipped calls changes with version but is constant w/ ship type
@@ -318,7 +318,7 @@ int shipwreck_loot(int64_t lower48, SeedInfo* seed_info, ShipLootRequirements* s
 
 		// BACK HALF CHEST LOOT (TREASURE CHEST)
 		if (type_pieces[ship_type] != 2) {
-			int64_t finder_seed = (seed) ^ 0x5DEECE66DLL;
+			int64_t finder_seed = (lower48) ^ 0x5DEECE66DLL;
 
 			int64_t carveX = nextLong(&finder_seed) | 1;
 			int64_t carveZ = nextLong(&finder_seed) | 1;
@@ -327,7 +327,7 @@ int shipwreck_loot(int64_t lower48, SeedInfo* seed_info, ShipLootRequirements* s
 			int z_off = treasure_offset_table[ship_type * 8 + ship_rot * 2 + 1];
 
 			finder_seed = (int64_t)(ship_pos.x + x_off * 16) * carveX + (int64_t)(ship_pos.z + z_off * 16) * carveZ;
-			finder_seed = finder_seed ^ seed & 0xFFFFFFFFFFFFLL;
+			finder_seed = finder_seed ^ lower48 & 0xFFFFFFFFFFFFLL;
 			finder_seed = (finder_seed + salt) ^ 0x5DEECE66DLL;
 
 			// advance the appropriate number of calls depending on ship and version
