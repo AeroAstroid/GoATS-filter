@@ -89,12 +89,28 @@ int shipwreck_pos(int64_t lower48, SeedInfo* seed_info, int range, int quadrants
 }
 
 int shipwreck_biome(int64_t seed, SeedInfo* seed_info, Generator* world_gen) {
+	Generator temp_gen = *world_gen;
 	int viable_ships = 0;
 
 	for (int s = 0; s < seed_info->ship_count; s++) {
 		Pos ship_pos = seed_info->shipwrecks[s];
 
-		int biome = getBiomeAt(world_gen, 4, (ship_pos.x >> 4) + 2, 63, (ship_pos.z >> 4) + 2);
+		int sampleX;
+		int sampleZ;
+
+		if (temp_gen.mc < MC_1_16) {
+            temp_gen.entry = &temp_gen.ls.layers[L_VORONOI_1];
+            sampleX = ship_pos.x + 9;
+            sampleZ = ship_pos.z + 9;
+        } else {
+            if (temp_gen.mc < MC_1_18) {
+                temp_gen.entry = &temp_gen.ls.layers[L_RIVER_MIX_4];
+			}
+            sampleX = ship_pos.x >> 2 + 2;
+            sampleZ = ship_pos.z >> 2 + 2;
+        }
+
+        int biome = getBiomeAt(&temp_gen, 0, sampleX, 63, sampleZ);
 
 		if (isOceanic(biome)) {
             seed_info->shipwrecks[viable_ships] = ship_pos;
