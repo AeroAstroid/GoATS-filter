@@ -4,10 +4,10 @@
 
 #include "../submodules/cubiomes/rng.h"
 
-int zero_cycle_towers(int64_t seed, int mc_version, int zero_direction, int zero_towers) {
+int zero_cycle_towers(int64_t lower48, int mc_version, int zero_direction, int zero_towers) {
 	int ind[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-	int64_t pillar_seed = seed ^ 0x5DEECE66DUL;
+	int64_t pillar_seed = lower48 ^ 0x5DEECE66DUL;
 	pillar_seed = nextLong(&pillar_seed) & 0xFFFF;
 	pillar_seed = pillar_seed ^ 0x5DEECE66DUL;
 

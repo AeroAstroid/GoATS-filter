@@ -138,6 +138,12 @@ int structureFilterLogic(int64_t seed, SeedInfo* seed_info, Filter* filter) {
 		}
 	}
 
+	if (filter->END_TOWERS) {
+		if (!zero_cycle_towers(seed, filter->mc_version, filter->zero_direction, filter->zero_towers)) {
+			return 0;
+		}
+	}
+
 	if (filter->END_CAGE) {
 		if (!end_cage(seed, filter->mc_version, filter->cage_limit)) {
 			return 0;
@@ -148,12 +154,6 @@ int structureFilterLogic(int64_t seed, SeedInfo* seed_info, Filter* filter) {
 }
 
 int biomeFilterLogic(int64_t seed, SeedInfo* seed_info, Filter* filter, Generator *world_gen) {
-
-	if (filter->END_TOWERS) {
-		if (!zero_cycle_towers(seed, filter->mc_version, filter->zero_direction, filter->zero_towers)) {
-			return 0;
-		}
-	}
 
 	applySeed(world_gen, DIM_OVERWORLD, seed);
 
