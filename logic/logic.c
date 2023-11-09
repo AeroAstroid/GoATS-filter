@@ -90,7 +90,7 @@ int structureFilterLogic(int64_t seed, SeedInfo* seed_info, Filter* filter) {
 		}
 
 		if (filter->check_bt_loot) {
-			if (!buried_treasure_loot(seed, seed_info, filter->bt_minimum, filter->bt_loot)) {
+			if (!buried_treasure_loot(seed, seed_info, filter->bt_minimum, filter->bt_loot, filter->mc_version)) {
 				return 0;
 			}
 		}

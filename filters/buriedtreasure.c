@@ -97,7 +97,9 @@ int bt_biome(int64_t seed, SeedInfo* seed_info, int inc_range, int bt_min, int b
 	return 0;
 }
 
-int buried_treasure_loot(int64_t lower48, SeedInfo* seed_info, int bt_minimum, BTLootRequirements* bt_loot) {
+int buried_treasure_loot(int64_t lower48, SeedInfo* seed_info, int bt_minimum, BTLootRequirements* bt_loot, int mc_version) {
+	int salt = mc_version < MC_1_16 ? 20002 : 30001;
+	
 	int viable_bts = 0;
 
 	for (int bt = 0; bt < seed_info->bt_count; bt++) {
@@ -109,7 +111,7 @@ int buried_treasure_loot(int64_t lower48, SeedInfo* seed_info, int bt_minimum, B
 		Pos bt_pos = seed_info->buried_treasures[bt];
 		
 		finder_seed = ((long)(bt_pos.x - 9) * carveX + (long)(bt_pos.z - 9) * carveZ) ^ lower48 & 0xFFFFFFFFFFFFLL;
-		finder_seed = (finder_seed + 30001) ^ 0x5DEECE66DUL;
+		finder_seed = (finder_seed + salt) ^ 0x5DEECE66DUL;
 
 		int64_t loot_table_seed = (int64_t)nextLong(&finder_seed) ^ 0x5DEECE66DUL;
 
@@ -121,7 +123,9 @@ int buried_treasure_loot(int64_t lower48, SeedInfo* seed_info, int bt_minimum, B
 		int food_count = 0;
 
 		// Loot pool 1: Heart of the sea
-		// Doesn't need a table - only 1 possible item, so no random calls are even used
+		// Doesn't need a table - only 1 possible item
+		// In 1.14+, this doesn't use a random call, but in 1.13 it does
+		if (mc_version < MC_1_14) skipNextN(&loot_table_seed, 1);
 
 		// Loot pool 2: Ingots and TNT
 		int loot_table_2[] = { // 3 possible items
